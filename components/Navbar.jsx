@@ -68,19 +68,19 @@ export default function Navbar() {
     <nav className="bg-brand-light-cream shadow-md sticky top-0 z-50 safe-top">
       {/* Один ряд на десктопі */}
       <div className="w-full max-w-[1440px] mx-auto px-3 sm:px-4">
-        <div className="flex items-center gap-2 h-16">
-          <Link href="/" className="flex items-center gap-2 shrink-0">
+        <div className="flex items-center gap-2 h-16 min-w-0">
+          <Link href="/" className="flex items-center gap-2 min-w-0 flex-1 lg:flex-none">
             <img
               src="/logo3.png"
               alt="logo"
-              className="h-10 w-10 object-contain rounded-full"
+              className="h-9 w-9 sm:h-10 sm:w-10 object-contain rounded-full shrink-0"
               onError={(e) => {
                 e.target.onerror = null;
                 e.target.src =
                   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 24 24' fill='%23F86E04'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3C/svg%3E";
               }}
             />
-            <span className="hidden xl:inline text-lg font-bold text-brand-dark-chocolate">
+            <span className="text-sm sm:text-base lg:text-lg font-bold text-brand-dark-chocolate truncate">
               {t("siteTitle")}
             </span>
           </Link>

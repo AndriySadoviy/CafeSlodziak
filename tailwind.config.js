@@ -6,6 +6,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['"Baloo 2"', 'Fredoka', 'system-ui', 'sans-serif'],
+      },
       colors: {
         brand: {
           'dark-chocolate': '#2F0E09',

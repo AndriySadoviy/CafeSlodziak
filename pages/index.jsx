@@ -9,6 +9,7 @@ export default function Home() {
   const [popular, setPopular] = useState([]);
   const [seasonal, setSeasonal] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [videoReady, setVideoReady] = useState(false);
 
   // Власні зображення для галереї (10 штук, як у вашій папці)
   const galleryImages = [
@@ -53,19 +54,31 @@ export default function Home() {
       <motion.section
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative text-center py-10 sm:py-16 min-h-[220px] sm:min-h-[320px] rounded-2xl sm:rounded-3xl overflow-hidden"
+        className="relative text-center py-10 sm:py-16 min-h-[280px] sm:min-h-[360px] md:min-h-[420px] rounded-2xl sm:rounded-3xl overflow-hidden bg-brand-dark-chocolate"
       >
+        <img
+          src="/video/1.jpg"
+          alt=""
+          aria-hidden="true"
+          className={`absolute inset-0 w-full h-full object-cover z-0 transition-opacity duration-500 ${
+            videoReady ? "opacity-0" : "opacity-100"
+          }`}
+        />
         <video
           autoPlay
           muted
           loop
           playsInline
-          className="absolute top-0 left-0 w-full h-full object-cover z-0"
-          poster="/images/hero-fallback.jpg"
+          preload="auto"
+          poster="/video/1.jpg"
+          onCanPlay={() => setVideoReady(true)}
+          onError={() => setVideoReady(false)}
+          className="absolute inset-0 w-full h-full object-cover z-0 origin-center scale-[0.9] sm:scale-100"
         >
           <source src="/video/video123.MOV" type="video/mp4" />
+          <source src="/video/video123.MOV" type="video/quicktime" />
         </video>
-        <div className="absolute top-0 left-0 w-full h-full bg-black/40 z-10"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-black/40 z-10 pointer-events-none"></div>
         <div className="relative z-20 text-white px-4">
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold mb-3 sm:mb-4">
             {t("heroTitle")}
