@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ProductCard from "../components/ProductCard";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -9,7 +9,8 @@ export default function Home() {
   const [popular, setPopular] = useState([]);
   const [seasonal, setSeasonal] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [videoReady, setVideoReady] = useState(false);
+  const heroVideoRef = useRef(null);
+  const [videoFailed, setVideoFailed] = useState(false);
 
   // Власні зображення для галереї (10 штук, як у вашій папці)
   const galleryImages = [
@@ -48,6 +49,29 @@ export default function Home() {
       .catch((err) => console.error("Failed to fetch products:", err));
   }, []);
 
+  useEffect(() => {
+    const video = heroVideoRef.current;
+    if (!video || videoFailed) return;
+
+    video.muted = true;
+    video.defaultMuted = true;
+    video.playsInline = true;
+    video.setAttribute("playsinline", "");
+    video.setAttribute("webkit-playsinline", "");
+
+    const startPlayback = () => {
+      video.play().catch(() => setVideoFailed(true));
+    };
+
+    if (video.readyState >= 2) {
+      startPlayback();
+    } else {
+      video.addEventListener("loadeddata", startPlayback, { once: true });
+    }
+
+    return () => video.removeEventListener("loadeddata", startPlayback);
+  }, [videoFailed]);
+
   return (
     <div className="space-y-10 sm:space-y-16">
       {/* Hero з відео (виправлено) */}
@@ -56,28 +80,28 @@ export default function Home() {
         animate={{ opacity: 1, y: 0 }}
         className="relative text-center py-10 sm:py-16 min-h-[280px] sm:min-h-[360px] md:min-h-[420px] rounded-2xl sm:rounded-3xl overflow-hidden bg-brand-dark-chocolate"
       >
-        <img
-          src="/video/1.jpg"
-          alt=""
-          aria-hidden="true"
-          className={`absolute inset-0 w-full h-full object-cover z-0 transition-opacity duration-500 ${
-            videoReady ? "opacity-0" : "opacity-100"
-          }`}
-        />
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          poster="/video/1.jpg"
-          onCanPlay={() => setVideoReady(true)}
-          onError={() => setVideoReady(false)}
-          className="absolute inset-0 w-full h-full object-cover z-0 origin-center scale-[0.9] sm:scale-100"
-        >
-          <source src="/video/video123.MOV" type="video/mp4" />
-          <source src="/video/video123.MOV" type="video/quicktime" />
-        </video>
+        {videoFailed ? (
+          <img
+            src="/video/1.jpg"
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 w-full h-full object-cover z-0"
+          />
+        ) : (
+          <video
+            ref={heroVideoRef}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            onError={() => setVideoFailed(true)}
+            className="absolute inset-0 w-full h-full object-cover object-center z-0 scale-[0.92] sm:scale-100"
+          >
+            <source src="/video/hero.mp4" type="video/mp4" />
+            <source src="/video/video123.MOV" type="video/quicktime" />
+          </video>
+        )}
         <div className="absolute top-0 left-0 w-full h-full bg-black/40 z-10 pointer-events-none"></div>
         <div className="relative z-20 text-white px-4">
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold mb-3 sm:mb-4">
