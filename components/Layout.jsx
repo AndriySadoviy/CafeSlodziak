@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 export default function Layout({ children }) {
   const router = useRouter();
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-brand-light-cream">
       <Navbar />
       <AnimatePresence mode="wait">
         <motion.main
@@ -15,7 +15,7 @@ export default function Layout({ children }) {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.3 }}
-          className="flex-grow container mx-auto px-4 py-8"
+          className="flex-grow container mx-auto px-3 sm:px-4 py-5 sm:py-8 bg-brand-light-cream safe-bottom"
         >
           {children}
         </motion.main>

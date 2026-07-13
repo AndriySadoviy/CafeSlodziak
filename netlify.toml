@@ -1,0 +1,12 @@
+[build]
+  command = "npx prisma generate && npm run build"
+  # Must differ from site root — plugin @netlify/plugin-nextjs overrides this at deploy time.
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "20"
+  NPM_CONFIG_PRODUCTION = "false"
+  DATABASE_URL = "file:./prisma/dev.db"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"

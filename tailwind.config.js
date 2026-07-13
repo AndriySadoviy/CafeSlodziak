@@ -13,6 +13,7 @@ module.exports = {
           'caramel-mousse': '#D3A16A',
           'espresso': '#4C1D13',
           'light-cream': '#FEF7EE',
+          'orange-light': '#FFF4E8',
         }
       },
       borderRadius: {
