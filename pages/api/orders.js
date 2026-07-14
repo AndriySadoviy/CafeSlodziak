@@ -1,9 +1,22 @@
 import { PrismaClient } from '@prisma/client';
+import { sendOrderEmail } from '../../lib/email/sendOrderEmail';
+
 const prisma = new PrismaClient();
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
-    const { userId, items, total, pickupTime, comment } = req.body;
+    const {
+      userId,
+      items,
+      total,
+      pickupTime,
+      comment,
+      customerName,
+      customerPhone,
+      paymentMethod,
+      paymentSuccess,
+    } = req.body;
+
     try {
       const order = await prisma.order.create({
         data: {
@@ -11,10 +24,32 @@ export default async function handler(req, res) {
           items: JSON.stringify(items),
           total,
           pickupTime,
-          comment: comment || null,   // зберігаємо коментар
+          comment: comment || null,
+          customerName: customerName || null,
+          customerPhone: customerPhone || null,
+          paymentMethod: paymentMethod || null,
+          paymentSuccess: Boolean(paymentSuccess),
           status: 'new',
         },
       });
+
+      if (paymentSuccess) {
+        try {
+          await sendOrderEmail({
+            customerName,
+            customerPhone,
+            pickupTime,
+            items,
+            comment,
+            total,
+            paymentMethod,
+            paymentSuccess,
+          });
+        } catch (emailErr) {
+          console.error('Order email failed:', emailErr);
+        }
+      }
+
       return res.status(201).json(order);
     } catch (error) {
       console.error(error);

@@ -14,7 +14,15 @@ const paymentMethods = [
 export default function Payment() {
   const { t } = useTranslation();
   const router = useRouter();
-  const { items, total, pickupTime, comment, clearCart } = useCartStore();
+  const {
+    items,
+    total,
+    pickupTime,
+    comment,
+    customerName,
+    customerPhone,
+    clearCart,
+  } = useCartStore();
   const user = useAuthStore((s) => s.user);
   const [selectedMethod, setSelectedMethod] = useState("blik");
   const [paying, setPaying] = useState(false);
@@ -38,7 +46,11 @@ export default function Payment() {
             items: orderItems,
             total,
             pickupTime,
-            comment,   // передаємо коментар
+            comment,
+            customerName,
+            customerPhone,
+            paymentMethod: selectedMethod,
+            paymentSuccess: true,
           }),
         });
 
@@ -74,7 +86,7 @@ export default function Payment() {
         <ul className="divide-y divide-gray-200">
           {items.map((item) => (
             <li key={item.id} className="py-2 flex flex-col sm:flex-row justify-between gap-1 text-gray-700">
-              <span className="break-words pr-2">{item.nameKey} × {item.quantity}</span>
+              <span className="break-words pr-2">{t(item.nameKey)} × {item.quantity}</span>
               <span className="font-semibold shrink-0">{item.price * item.quantity} zł</span>
             </li>
           ))}

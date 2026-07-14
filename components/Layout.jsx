@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 export default function Layout({ children }) {
   const router = useRouter();
   return (
-    <div className="flex flex-col min-h-screen bg-brand-light-cream">
+    <div className="flex flex-col min-h-screen bg-brand-light-cream overflow-x-hidden">
       <Navbar />
       <AnimatePresence mode="wait">
         <motion.main

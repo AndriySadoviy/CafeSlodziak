@@ -20,13 +20,17 @@ model User {
 
 
 model Order {
-  id         Int      @id @default(autoincrement())
-  userId     Int?
-  user       User?    @relation(fields: [userId], references: [id])
-  items      String   // JSON
-  total      Int
-  pickupTime String
-  comment    String?  
-  status     String   @default("new")
-  createdAt  DateTime @default(now())
+  id              Int      @id @default(autoincrement())
+  userId          Int?
+  user            User?    @relation(fields: [userId], references: [id])
+  items           String   // JSON
+  total           Int
+  pickupTime      String
+  comment         String?
+  customerName    String?
+  customerPhone   String?
+  paymentMethod   String?
+  paymentSuccess  Boolean  @default(false)
+  status          String   @default("new")
+  createdAt       DateTime @default(now())
 }

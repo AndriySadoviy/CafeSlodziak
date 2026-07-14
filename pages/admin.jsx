@@ -249,8 +249,20 @@ export default function Admin() {
               </div>
               <p className="text-gray-700">
                 <span className="font-medium">Klient:</span>{' '}
-                {order.user?.name || 'Gość'}
+                {order.customerName || order.user?.name || 'Gość'}
               </p>
+              {order.customerPhone && (
+                <p className="text-gray-700">
+                  <span className="font-medium">Telefon:</span> {order.customerPhone}
+                </p>
+              )}
+              {order.paymentMethod && (
+                <p className="text-gray-700">
+                  <span className="font-medium">Płatność:</span>{' '}
+                  {order.paymentMethod}
+                  {order.paymentSuccess ? ' ✅' : ' ❌'}
+                </p>
+              )}
               <p className="text-gray-700">
                 <span className="font-medium">Data zamówienia:</span>{' '}
                 {formatDate(order.createdAt)}

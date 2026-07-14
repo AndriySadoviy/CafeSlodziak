@@ -11,12 +11,18 @@ export default function Cart() {
   const setPickupTime = useCartStore((s) => s.setPickupTime);
   const comment = useCartStore((s) => s.comment);
   const setComment = useCartStore((s) => s.setComment);
+  const customerName = useCartStore((s) => s.customerName);
+  const setCustomerName = useCartStore((s) => s.setCustomerName);
+  const customerPhone = useCartStore((s) => s.customerPhone);
+  const setCustomerPhone = useCartStore((s) => s.setCustomerPhone);
   const router = useRouter();
   const { t } = useTranslation();
-  const user = useAuthStore((s) => s.user);
 
   const goToPayment = () => {
-    // Просто переходимо на сторінку оплати
+    if (!customerName.trim() || !customerPhone.trim()) {
+      alert(t("cartContactRequired"));
+      return;
+    }
     router.push("/payment");
   };
 
@@ -46,6 +52,32 @@ export default function Cart() {
               </span>
             </div>
 
+            <div className="mb-4">
+              <label className="block text-lg font-semibold text-brand-dark-chocolate mb-2">
+                {t("customerName")} *
+              </label>
+              <input
+                type="text"
+                value={customerName}
+                onChange={(e) => setCustomerName(e.target.value)}
+                className="w-full border border-brand-caramel-mousse rounded-xl p-3"
+                required
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-lg font-semibold text-brand-dark-chocolate mb-2">
+                {t("customerPhone")} *
+              </label>
+              <input
+                type="tel"
+                value={customerPhone}
+                onChange={(e) => setCustomerPhone(e.target.value)}
+                className="w-full border border-brand-caramel-mousse rounded-xl p-3"
+                required
+              />
+            </div>
+
             <div className="mb-6">
               <label className="block text-lg font-semibold text-brand-dark-chocolate mb-2">
                 {t("pickupTime")}:
@@ -66,14 +98,14 @@ export default function Cart() {
             {/* Поле коментаря */}
             <div className="mb-6">
               <label className="block text-lg font-semibold text-brand-dark-chocolate mb-2">
-                Uwagi do zamówienia
+                {t("orderNotes")}
               </label>
               <textarea
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
                 rows={3}
                 className="w-full border-brand-caramel-mousse rounded-xl p-3"
-                placeholder="Np. uczulenie na orzechy, poproszę więcej sosu..."
+                placeholder={t("orderNotesPlaceholder")}
               />
             </div>
 
