@@ -4,7 +4,8 @@
 
 html {
   color-scheme: light;
-  background-color: #4C1D13;
+  background-color: #FEF7EE;
+  height: auto;
 }
 
 body {
@@ -12,20 +13,15 @@ body {
   color: #2F0E09;
   font-family: 'Baloo 2', 'Fredoka', system-ui, sans-serif;
   min-height: 100vh;
+  height: auto;
+  overflow-x: clip;
+  overflow-y: scroll;
 }
 
 #__next {
   background-color: #FEF7EE;
   min-height: 100vh;
-}
-
-html {
-  overflow-x: hidden;
-}
-
-body {
-  overflow-x: hidden;
-  overflow-y: auto;
+  height: auto;
 }
 
 .scrollbar-hide {

@@ -22,6 +22,9 @@ export default function Navbar() {
 
   useEffect(() => {
     setMounted(true);
+    document.body.style.overflow = "";
+    document.body.style.position = "";
+    document.documentElement.style.overflow = "";
   }, []);
 
   useEffect(() => {
@@ -29,16 +32,22 @@ export default function Navbar() {
   }, [router.pathname]);
 
   useEffect(() => {
-    const lockScroll = () => {
-      const isMobile = window.matchMedia("(max-width: 1023px)").matches;
-      document.body.style.overflow = menuOpen && isMobile ? "hidden" : "";
-    };
-
-    lockScroll();
-    window.addEventListener("resize", lockScroll);
-    return () => {
-      window.removeEventListener("resize", lockScroll);
+    if (!menuOpen) {
       document.body.style.overflow = "";
+      document.body.style.position = "";
+      return;
+    }
+
+    const isMobile = window.matchMedia("(max-width: 1023px)").matches;
+    if (!isMobile) {
+      document.body.style.overflow = "";
+      return;
+    }
+
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prevOverflow;
     };
   }, [menuOpen]);
 
