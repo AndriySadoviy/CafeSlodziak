@@ -255,5 +255,10 @@
   "ice_americano": "Ice americano",
   "ice_americano_desc": "Холодний американо",
   "espresso_tonik": "Espresso tonic",
-  "espresso_tonik_desc": "Еспресо з тоніком"
+  "espresso_tonik_desc": "Еспресо з тоніком",
+
+  "slodkiStol": "Солодкий стіл",
+  "slonyStol": "Солоний стіл",
+  "urodziny": "Дні народження",
+  "katering": "Святкові прийоми"
 }

@@ -29,8 +29,15 @@ export default function Navbar() {
   }, [router.pathname]);
 
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? "hidden" : "";
+    const lockScroll = () => {
+      const isMobile = window.matchMedia("(max-width: 1023px)").matches;
+      document.body.style.overflow = menuOpen && isMobile ? "hidden" : "";
+    };
+
+    lockScroll();
+    window.addEventListener("resize", lockScroll);
     return () => {
+      window.removeEventListener("resize", lockScroll);
       document.body.style.overflow = "";
     };
   }, [menuOpen]);

@@ -255,5 +255,10 @@
   "ice_americano": "Ice americano",
   "ice_americano_desc": "Iced americano",
   "espresso_tonik": "Espresso tonic",
-  "espresso_tonik_desc": "Espresso with tonic water"
+  "espresso_tonik_desc": "Espresso with tonic water",
+
+  "slodkiStol": "Sweet Table",
+  "slonyStol": "Savory Table",
+  "urodziny": "Birthdays",
+  "katering": "Celebration events"
 }

@@ -19,10 +19,13 @@ body {
   min-height: 100vh;
 }
 
-html,
+html {
+  overflow-x: hidden;
+}
+
 body {
   overflow-x: hidden;
-  overscroll-behavior-y: none;
+  overflow-y: auto;
 }
 
 .scrollbar-hide {
