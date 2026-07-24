@@ -3,7 +3,7 @@ import Head from "next/head";
 import QRCode from "qrcode";
 
 const MENU_URL =
-  process.env.NEXT_PUBLIC_MENU_URL || "https://cafeslodziak.netlify.app/menu";
+  process.env.NEXT_PUBLIC_MENU_URL || "https://cafeslodziak-rzeszow.com/menu";
 
 function MenuQrCard() {
   const canvasRef = useRef(null);
