@@ -5,9 +5,28 @@ import QRCode from "qrcode";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, "..");
+const publicDir = path.join(root, "public");
 const MENU_URL =
   process.env.NEXT_PUBLIC_MENU_URL || "https://cafeslodziak.netlify.app/menu";
 
+// 1) Чистий QR — PNG (для друку / стікерів)
+await QRCode.toFile(path.join(publicDir, "menu-qr.png"), MENU_URL, {
+  width: 800,
+  margin: 2,
+  color: { dark: "#2F0E09", light: "#FEF7EE" },
+  errorCorrectionLevel: "H",
+});
+
+// 2) Чистий QR — SVG
+await QRCode.toFile(path.join(publicDir, "menu-qr.svg"), MENU_URL, {
+  type: "svg",
+  width: 400,
+  margin: 2,
+  color: { dark: "#2F0E09", light: "#FEF7EE" },
+  errorCorrectionLevel: "H",
+});
+
+// 3) Картка з логотипом і QR
 const qrSvg = await QRCode.toString(MENU_URL, {
   type: "svg",
   margin: 0,
@@ -16,9 +35,7 @@ const qrSvg = await QRCode.toString(MENU_URL, {
   width: 220,
 });
 
-const qrInner = qrSvg
-  .replace(/<svg[^>]*>/, "")
-  .replace("</svg>", "");
+const qrInner = qrSvg.replace(/<svg[^>]*>/, "").replace("</svg>", "");
 
 const cardSvg = `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="340" height="520" viewBox="0 0 340 520">
@@ -37,7 +54,10 @@ const cardSvg = `<?xml version="1.0" encoding="UTF-8"?>
   <text x="170" y="500" fill="#2F0E09" font-family="Arial, sans-serif" font-size="13" text-anchor="middle">+48 530 599 994</text>
 </svg>`;
 
-const outPath = path.join(root, "public", "menu-qr-card.svg");
-fs.writeFileSync(outPath, cardSvg, "utf8");
-console.log("Saved:", outPath);
-console.log("Menu URL:", MENU_URL);
+fs.writeFileSync(path.join(publicDir, "menu-qr-card.svg"), cardSvg, "utf8");
+
+console.log("Generated:");
+console.log("  public/menu-qr.png      — чистий QR");
+console.log("  public/menu-qr.svg      — чистий QR (SVG)");
+console.log("  public/menu-qr-card.svg — картка з логотипом");
+console.log("URL:", MENU_URL);

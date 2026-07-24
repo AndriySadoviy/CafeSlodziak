@@ -37,11 +37,18 @@ function MenuQrCard() {
             Drukuj kartę / Print
           </button>
           <a
-            href="/menu-qr-card.svg"
-            download="CafeSlodziak-menu-qr.svg"
+            href="/menu-qr.png"
+            download="CafeSlodziak-menu-qr.png"
             className="border-2 border-brand-orange-zest text-brand-orange-zest font-bold py-3 px-6 rounded-2xl"
           >
-            Pobierz SVG
+            Pobierz QR (PNG)
+          </a>
+          <a
+            href="/menu-qr-card.svg"
+            download="CafeSlodziak-menu-qr-card.svg"
+            className="border-2 border-brand-caramel-mousse text-brand-dark-chocolate font-bold py-3 px-6 rounded-2xl"
+          >
+            Pobierz kartę (SVG)
           </a>
         </div>
 
