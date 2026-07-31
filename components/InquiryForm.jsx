@@ -40,6 +40,9 @@ export default function InquiryForm({
           items: [orderItem],
           total: orderItem.price || 0,
           pickupTime: form.date || "do ustalenia",
+          customerName: form.name || null,
+          customerPhone: form.phone || null,
+          paymentSuccess: false,
           comment: [
             `Typ: ${orderType}`,
             form.name && `Kontakt: ${form.name}`,
