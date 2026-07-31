@@ -14,15 +14,13 @@ const paymentMethods = [
 export default function Payment() {
   const { t } = useTranslation();
   const router = useRouter();
-  const {
-    items,
-    total,
-    pickupTime,
-    comment,
-    customerName,
-    customerPhone,
-    clearCart,
-  } = useCartStore();
+  const items = useCartStore((s) => s.items);
+  const total = useCartStore((s) => s.total());
+  const pickupTime = useCartStore((s) => s.pickupTime);
+  const comment = useCartStore((s) => s.comment);
+  const customerName = useCartStore((s) => s.customerName);
+  const customerPhone = useCartStore((s) => s.customerPhone);
+  const clearCart = useCartStore((s) => s.clearCart);
   const user = useAuthStore((s) => s.user);
   const [selectedMethod, setSelectedMethod] = useState("blik");
   const [paying, setPaying] = useState(false);
