@@ -31,8 +31,9 @@ export default async function handler(req, res) {
         },
       });
 
+      let emailResult = { sent: false, reason: "not_attempted" };
       try {
-        await sendOrderEmail({
+        emailResult = await sendOrderEmail({
           customerName,
           customerPhone,
           pickupTime,
@@ -44,9 +45,17 @@ export default async function handler(req, res) {
         });
       } catch (emailErr) {
         console.error("Order email failed:", emailErr);
+        emailResult = {
+          sent: false,
+          reason: "error",
+          message: emailErr.message || "Email send failed",
+        };
       }
 
-      return res.status(201).json(order);
+      return res.status(201).json({
+        ...order,
+        email: emailResult,
+      });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ message: "Failed to create order" });
