@@ -51,13 +51,18 @@ export default function Payment() {
         }),
       });
 
-      if (!res.ok) throw new Error("Nie udało się zapisać zamówienia");
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.message || "Nie udało się zapisać zamówienia");
+
+      if (data.email && data.email.sent === false) {
+        console.warn("Powiadomienie nie wysłane:", data.email);
+      }
 
       clearCart();
       router.push("/order");
     } catch (err) {
       console.error(err);
-      alert("Wystąpił błąd. Spróbuj ponownie.");
+      alert(err.message || "Wystąpił błąd. Spróbuj ponownie.");
       setPaying(false);
     }
   };
