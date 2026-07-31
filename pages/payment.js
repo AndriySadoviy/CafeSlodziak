@@ -27,43 +27,41 @@ export default function Payment() {
   const [selectedMethod, setSelectedMethod] = useState("blik");
   const [paying, setPaying] = useState(false);
 
-  const handlePay = async () => {
+  // Оплата онлайн вимкнена: лише фіксуємо замовлення (без реальної оплати)
+  const handleConfirmOrder = async () => {
     setPaying(true);
-    // Імітація оплати (2 сек)
-    setTimeout(async () => {
-      try {
-        const orderItems = items.map((item) => ({
-          nameKey: item.nameKey,
-          quantity: item.quantity,
-          price: item.price,
-        }));
+    try {
+      const orderItems = items.map((item) => ({
+        nameKey: item.nameKey,
+        quantity: item.quantity,
+        price: item.price,
+      }));
 
-        const res = await fetch("/api/orders", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            userId: user?.id || null,
-            items: orderItems,
-            total,
-            pickupTime,
-            comment,
-            customerName,
-            customerPhone,
-            paymentMethod: selectedMethod,
-            paymentSuccess: true,
-          }),
-        });
+      const res = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: user?.id || null,
+          items: orderItems,
+          total,
+          pickupTime,
+          comment,
+          customerName,
+          customerPhone,
+          paymentMethod: selectedMethod,
+          paymentSuccess: false,
+        }),
+      });
 
-        if (!res.ok) throw new Error("Nie udało się zapisać zamówienia");
+      if (!res.ok) throw new Error("Nie udało się zapisać zamówienia");
 
-        clearCart();
-        router.push("/order");
-      } catch (err) {
-        console.error(err);
-        alert("Wystąpił błąd. Spróbuj ponownie.");
-        setPaying(false);
-      }
-    }, 2000);
+      clearCart();
+      router.push("/order");
+    } catch (err) {
+      console.error(err);
+      alert("Wystąpił błąd. Spróbuj ponownie.");
+      setPaying(false);
+    }
   };
 
   if (items.length === 0) {
@@ -77,17 +75,29 @@ export default function Payment() {
   return (
     <div className="max-w-2xl mx-auto px-2 sm:px-4 py-5 sm:py-8">
       <h1 className="text-2xl sm:text-3xl font-bold text-brand-dark-chocolate mb-4 sm:mb-6">
-        Płatność
+        {t("checkout")}
       </h1>
 
-      {/* Підсумок */}
+      <div className="bg-brand-orange-light/50 text-brand-dark-chocolate text-sm p-3 rounded-xl mb-6">
+        {t("payOnPickupNote")}
+      </div>
+
       <div className="bg-white rounded-2xl shadow p-6 mb-6">
-        <h2 className="text-xl font-bold text-brand-dark-chocolate mb-2">Twoje zamówienie</h2>
+        <h2 className="text-xl font-bold text-brand-dark-chocolate mb-2">
+          Twoje zamówienie
+        </h2>
         <ul className="divide-y divide-gray-200">
           {items.map((item) => (
-            <li key={item.id} className="py-2 flex flex-col sm:flex-row justify-between gap-1 text-gray-700">
-              <span className="break-words pr-2">{t(item.nameKey)} × {item.quantity}</span>
-              <span className="font-semibold shrink-0">{item.price * item.quantity} zł</span>
+            <li
+              key={item.id}
+              className="py-2 flex flex-col sm:flex-row justify-between gap-1 text-gray-700"
+            >
+              <span className="break-words pr-2">
+                {t(item.nameKey)} × {item.quantity}
+              </span>
+              <span className="font-semibold shrink-0">
+                {item.price * item.quantity} zł
+              </span>
             </li>
           ))}
         </ul>
@@ -102,9 +112,13 @@ export default function Payment() {
         )}
       </div>
 
-      {/* Вибір методу оплати */}
       <div className="bg-white rounded-2xl shadow p-6 mb-6">
-        <h2 className="text-xl font-bold text-brand-dark-chocolate mb-4">Wybierz metodę płatności</h2>
+        <h2 className="text-xl font-bold text-brand-dark-chocolate mb-2">
+          Preferowana metoda płatności
+        </h2>
+        <p className="text-sm text-gray-500 mb-4">
+          Wybór tylko informacyjny — płatność online jest wyłączona.
+        </p>
         <div className="space-y-3">
           {paymentMethods.map((method) => (
             <label
@@ -131,21 +145,11 @@ export default function Payment() {
       </div>
 
       <button
-        onClick={handlePay}
+        onClick={handleConfirmOrder}
         disabled={paying}
         className="w-full bg-brand-orange-zest hover:bg-orange-600 text-white font-bold py-3 rounded-2xl text-xl transition-colors disabled:opacity-50 flex justify-center items-center"
       >
-        {paying ? (
-          <span className="flex items-center gap-2">
-            <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
-            </svg>
-            Płatność w toku...
-          </span>
-        ) : (
-          `Zapłać ${total} zł`
-        )}
+        {paying ? "..." : t("placeOrder")}
       </button>
     </div>
   );

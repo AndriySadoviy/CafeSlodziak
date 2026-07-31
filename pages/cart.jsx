@@ -2,7 +2,6 @@ import useCartStore from "../lib/store/cartStore";
 import CartItem from "../components/CartItem";
 import { useRouter } from "next/router";
 import { useTranslation } from "../lib/store/languageStore";
-import useAuthStore from "../lib/store/authStore";
 
 export default function Cart() {
   const items = useCartStore((s) => s.items);
@@ -87,15 +86,25 @@ export default function Cart() {
                 onChange={(e) => setPickupTime(e.target.value)}
                 className="w-full md:w-48 border-brand-caramel-mousse rounded-xl p-2"
               >
-                {["10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00"].map(
-                  (time) => (
-                    <option key={time} value={time}>{time}</option>
-                  )
-                )}
+                {[
+                  "10:00",
+                  "11:00",
+                  "12:00",
+                  "13:00",
+                  "14:00",
+                  "15:00",
+                  "16:00",
+                  "17:00",
+                  "18:00",
+                  "19:00",
+                ].map((time) => (
+                  <option key={time} value={time}>
+                    {time}
+                  </option>
+                ))}
               </select>
             </div>
 
-            {/* Поле коментаря */}
             <div className="mb-6">
               <label className="block text-lg font-semibold text-brand-dark-chocolate mb-2">
                 {t("orderNotes")}
